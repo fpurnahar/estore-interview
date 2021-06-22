@@ -29,11 +29,15 @@
                     @csrf
                     <h3>{{ $showData->nama_product }}</h3>
                     <p class="text-muted">IDR {{ number_format($showData->harga_product) }}</p>
-                    <button type="button" class="btn btn-sm" style="background-color: #EAEAEF; color: white;"><i
+                    <button type="button" class="minus btn btn-sm" style="background-color: #EAEAEF; color: white;"
+                        data-id="{{ $showData->id }}" data-qty="{{ $showData->stock_product }}"><i
                             class="fas fa-minus-circle"></i></button>
-                    <input type="number" name="qty" id="" value="1" min="1" max="{{ $showData->stock_product }}"
-                        class="mx-2 text-center">
-                    <button type="button" class="btn btn-sm btn-success" style="color: white;"><i
+
+                    <input type="number" name="qty" id="qty{{ $showData->id }}" value="1" min="1"
+                        max="{{ $showData->stock_product }}" class="mx-2 text-center">
+
+                    <button type="button" class="plus btn btn-sm btn-success" style="color: white;"
+                        data-id="{{ $showData->id }}" data-qty="{{ $showData->stock_product }}"><i
                             class="fas fa-plus-circle"></i></button>
 
                     <div class="btn-product">
@@ -57,4 +61,34 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        $('.plus').on('click', function() {
+            id = $(this).data("id")
+            var oldValue = $("#qty" + id).val();
+            if ($("#qty" + id).val() > $(this).data("qty") - 1) {
+                $("#qty" + id).val(parseFloat(oldValue) - 0);
+                alert('Qty Melebihi Stock')
+            } else {
+                $("#qty" + id).val(parseFloat(oldValue) + 1);
+            }
+        })
+        $('.minus').on('click', function() {
+            id = $(this).data("id")
+            var oldValue = $("#qty" + id).val();
+
+            console.log(parseFloat(oldValue) + 1)
+            if ($("#qty" + id).val() <= 1) {
+                $("#qty" + id).val(parseFloat(oldValue) + 0);
+                alert('Qty Kurang Minimum Belanja')
+            } else {
+
+                $("#qty" + id).val(parseFloat(oldValue) - 1);
+            }
+
+
+        })
+    </script>
+
 @endsection
