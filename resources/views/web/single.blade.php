@@ -86,8 +86,6 @@
 
                 $("#qty" + id).val(parseFloat(oldValue) - 1);
             }
-
-
         })
     </script>
 
